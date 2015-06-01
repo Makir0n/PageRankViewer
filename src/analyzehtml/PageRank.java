@@ -25,19 +25,14 @@ public class PageRank {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
 
-        
-        
-         new Browser();
-        //int edge_num = 0;
         ArrayList<Integer> totalPage = new ArrayList<Integer>();
         ArrayList<Integer> tosID = new ArrayList<Integer>();
         ArrayList<Integer> fromsID = new ArrayList<Integer>();
 
-        String jdbc_url = "jdbc:mysql://localhost/LINEpage";
-        String user = "root";
-        String password = "@xes";
+        String jdbc_url = "jdbc:mysql://localhost/LINEtest";
+        String user = "name";
+        String password = "pass";
         ResultSet rsLink;
         
         int outNum = 10;
