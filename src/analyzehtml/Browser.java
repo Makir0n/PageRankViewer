@@ -22,32 +22,36 @@ import javax.swing.event.HyperlinkListener;
 /**
  *
  * @author makir0n
+ *
+ * サーバにURL投げる JSONが返ってくるから 算出されたランクスコアに合せて HTMLを編集し表示する
+ *
  */
 public class Browser {
 
-    //private String URL = "http://ja.wikipedia.org/wiki/%E8%8D%89%E6%B4%A5%E5%B8%82";
-    //private String URL = "http://ja.wikipedia.org/wiki/%E5%9B%9E%E9%8D%8B%E8%82%89";    //最初にセットしておくURL
-    private String URL = "http://imagingrium.com/test/%E5%AD%98%E5%91%BD%E4%BA%BA%E7%89%A9.html";    //最初にセットしておくURL
-    private JFrame frame = new JFrame();                    //フレーム自体
-    private JEditorPane webPagePane = new JEditorPane();    //実際にウェブページの表示に使われる
-    private JTextField address = new JTextField(URL);    //URLが入力されるフィールド
+    public static void main(String[] args) {
 
-    
-    
-    public Browser() {
-        //アドレスが変更されたさいのactionListnerを登録する。
+
+    //private String URL = "http://ja.wikipedia.org/wiki/%E8%8D%89%E6%B4%A5%E5%B8%82";
+    String URL = "http://ja.wikipedia.org/wiki/%E5%9B%9E%E9%8D%8B%E8%82%89";    //最初にセットしておくURL
+    //private String URL = "http://imagingrium.com/test/%E5%AD%98%E5%91%BD%E4%BA%BA%E7%89%A9.html";    //最初にセットしておくURL
+    JFrame frame = new JFrame();                    //フレーム自体
+    JEditorPane webPagePane = new JEditorPane();    //実際にウェブページの表示に使われる
+    JTextField address = new JTextField(URL);    //URLが入力されるフィールド
+        
+//アドレスが変更されたさいのactionListnerを登録する。
         address.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                setUrl(address.getText());
+                sendURL sendurl = new sendURL(URL);
+                setUrl(webPagePane, address.getText());
             }
 
         });
         //address.setEditable(true);
-        
-            AnalyzeHTML ahtml = new AnalyzeHTML(URL);
-            ArrayList<String> linkTitle = ahtml.getLinkPageId();
-            
+
+        AnalyzeHTML ahtml = new AnalyzeHTML(URL);
+        ArrayList<String> linkTitle = ahtml.getLinkPageId();
+
         //ウェブページ中のリンクがクリックされたときのHyperLinkListnerを登録する
         webPagePane.addHyperlinkListener(new HyperlinkListener() {
             @Override
@@ -56,14 +60,14 @@ public class Browser {
                     return;
                 }
                 String url = he.getURL().toString();
-                setUrl(url);
+                setUrl(webPagePane, url);
                 address.setText(url);
             }
 
         });
         //AnalyzeHTML aHTML = new AnalyzeHTML(URL);
         webPagePane.setEditable(false);        //ウェブページの表示使われるJEditorPaneを変更不能に設定する
-        setUrl(URL);
+        setUrl(webPagePane, URL);
         //コンポーネントを登録する
         frame.getContentPane().add(address, BorderLayout.NORTH);
         frame.getContentPane().add(new JScrollPane(webPagePane));
@@ -72,15 +76,16 @@ public class Browser {
         frame.setVisible(true);
     }
 
-    private void setUrl(String url) {
+    static void setUrl(JEditorPane webPagePane, String url) {
         try {
             webPagePane.setPage(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    ReWriteHTML(){
-    
+
+    void ReWriteHTML() {
+
     }
+    
 }
